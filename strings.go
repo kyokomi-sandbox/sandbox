@@ -54,8 +54,14 @@ func Sample() {
 	fmt.Println("FieldsFunc", strings.FieldsFunc(t1, Is123))
 
 	// Join
-
-	// Map
+	inputUrl1 := TrimPrefixAndSuffix("http://localhost:8080/", "/")
+	inputUrl2 := TrimPrefixAndSuffix("/test/", "/")
+	fmt.Println(strings.Join([]string{inputUrl1, inputUrl2}, "/"))
 
 	// Trim
 }
+
+func TrimPrefixAndSuffix(s, fix string) string {
+	return strings.TrimSuffix(strings.TrimPrefix(s, fix), fix)
+}
+
