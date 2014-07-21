@@ -8,5 +8,7 @@ func main() {
 	text := CreateTemplateTree("Hello", "golang").Execute()
 
 	fmt.Println("Result:", text)
+
+	Sample()
 }
 
