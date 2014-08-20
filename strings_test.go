@@ -5,6 +5,9 @@ import (
 	"strings"
 )
 
+func TestSample(t *testing.T) {
+	Sample()
+}
 
 func TestFieldsFunc(t *testing.T) {
 
