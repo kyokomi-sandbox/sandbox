@@ -1,73 +1,35 @@
 package main
 
 import (
+	"expvar"
 	"fmt"
 	"net/http"
-	"net/url"
 	"log"
-	"io/ioutil"
-	"strings"
+	"github.com/gorilla/mux"
+	"runtime"
 )
 
-
-func doExcel() {
-	readExcel()
-}
-
-func doTemplate() {
-	text := CreateTemplateTree("Hello", "golang").Execute()
-	fmt.Println("Result:", text)
-}
-
-func doString() {
-	Sample()
-}
-
-func doScan() {
-	c := CliScan {
-		Scans: []Scan{
-			{
-				Key: "answer",
-				Message: "Do you want to create one? [Y/n]",
-			},
-		},
-	}
-	fmt.Println("answer >", c.scan("answer"))
-}
-
-func doHttpPUT() {
-	params := make(url.Values)
-	params.Set("title", "hogefuga11111111")
-
-	// http put
-	id      := "67040"
-	issueID := "67696"
-	token   := "ssssssssssssssssssssss"
-
-	urlStr := fmt.Sprintf("https://gitlab.com/api/v3/projects/%s/issues/%s?private_token=%s", id, issueID, token)
-
-	req, err := http.NewRequest("PUT", urlStr, strings.NewReader(params.Encode()))
-	if err != nil {
-		log.Fatal(err)
-	}
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-
-	res, err := http.DefaultClient.Do(req)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	data, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Println(string(data))
+func numGoroutine() interface{} {
+	return interface{}(runtime.NumGoroutine())
 }
 
 func main() {
 	fmt.Println("Hello Go Sandbox!")
 
+	r := mux.NewRouter()
+	r.HandleFunc("/", func (w http.ResponseWriter, r *http.Request) {
+		fmt.Fprint(w, "Hello")
+	})
+	r.HandleFunc("/hoge/{id}", func (w http.ResponseWriter, r *http.Request) {
 
+		vars := mux.Vars(r)
+
+		fmt.Fprint(w, "hoge Hello id = ", vars["id"])
+	})
+
+	expvar.Publish("goroutineNum", expvar.Func(numGoroutine))
+
+	http.Handle("/", r)
+	log.Fatal(http.ListenAndServe(":3000", nil))
 }
 
