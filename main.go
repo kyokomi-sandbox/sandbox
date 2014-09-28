@@ -6,11 +6,12 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"bytes"
+	"io"
+	"strings"
 )
 
-
-func main() {
-	fmt.Println("Hello Go Sandbox!")
+func tarWrite() {
 
 	f, err := os.Create("test.tar")
 	if err != nil {
@@ -55,6 +56,44 @@ func main() {
 
 	if err := f.Close(); err != nil {
 		log.Fatal(err)
+	}
+
+}
+
+
+func main() {
+	fmt.Println("Hello Go Sandbox!")
+
+	// tarファイルを読み込み
+	file, err := ioutil.ReadFile("test.tar")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// tarのreaderを作成
+	r := bytes.NewReader(file)
+	tr := tar.NewReader(r)
+
+	for {
+		// ファイルの終わりまで読み込み
+		hdr, err := tr.Next()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			log.Fatal(err)
+		}
+		// ファイル名とサイズを出力
+		fmt.Printf("fileName : %s (%d)\n", hdr.Name, hdr.Size)
+
+		// .txtファイルのみ内容を標準出力する
+		if !strings.HasSuffix(hdr.Name, ".txt") {
+			continue
+		}
+		if _, err := io.Copy(os.Stdout, tr); err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println()
 	}
 }
 
