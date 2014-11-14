@@ -5,5 +5,5 @@ import "fmt"
 func main() {
 	fmt.Println("Hello Go Sandbox!")
 
-	socketServer()
+	RedisExample("hoge")
 }
