@@ -5,5 +5,5 @@ import "fmt"
 func main() {
 	fmt.Println("Hello Go Sandbox!")
 
-	RedisExample("hoge")
+	RedisExample("article:10000", "article:12000")
 }
