@@ -1,10 +1,10 @@
 package main
 
 import (
-	"fmt"
 	"bufio"
-	"os"
 	"bytes"
+	"fmt"
+	"os"
 	"strings"
 	"time"
 )

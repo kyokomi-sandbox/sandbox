@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"compress/bzip2"
-	"os"
-	"log"
+	"fmt"
 	"io/ioutil"
+	"log"
+	"os"
 )
 
 func bzip2Exec() {

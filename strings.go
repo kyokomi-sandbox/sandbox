@@ -1,16 +1,16 @@
 package main
 
 import (
-	"strings"
 	"fmt"
+	"strings"
 	"unicode"
 )
 
 func Is123(r rune) bool {
 	if uint32(r) <= unicode.MaxLatin1 {
-	switch r {
+		switch r {
 		case '1', '2', '3':
-		return true
+			return true
 		}
 	}
 	return false
@@ -64,4 +64,3 @@ func Sample() {
 func TrimPrefixAndSuffix(s, fix string) string {
 	return strings.TrimSuffix(strings.TrimPrefix(s, fix), fix)
 }
-

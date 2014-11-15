@@ -1,13 +1,12 @@
 package main
 
-
 import (
+	"archive/zip"
 	"fmt"
+	"io"
+	"io/ioutil"
 	"log"
 	"os"
-	"io/ioutil"
-	"archive/zip"
-	"io"
 )
 
 func readerExample() {

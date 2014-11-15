@@ -3,10 +3,11 @@ package main
 import (
 	"expvar"
 	"fmt"
-	"net/http"
 	"log"
-	"github.com/gorilla/mux"
+	"net/http"
 	"runtime"
+
+	"github.com/gorilla/mux"
 )
 
 func numGoroutine() interface{} {
@@ -16,10 +17,10 @@ func numGoroutine() interface{} {
 func gorilla() {
 
 	r := mux.NewRouter()
-	r.HandleFunc("/", func (w http.ResponseWriter, r *http.Request) {
+	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "Hello")
 	})
-	r.HandleFunc("/hoge/{id}", func (w http.ResponseWriter, r *http.Request) {
+	r.HandleFunc("/hoge/{id}", func(w http.ResponseWriter, r *http.Request) {
 
 		vars := mux.Vars(r)
 
@@ -31,4 +32,3 @@ func gorilla() {
 	http.Handle("/", r)
 	log.Fatal(http.ListenAndServe(":3000", nil))
 }
-
