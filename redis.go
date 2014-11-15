@@ -11,12 +11,34 @@ import (
 
 const ONE_WEEK_DAY = 7
 const VOTE_SCORE = 432
+const ARTICLES_PER_PAGE = 25
 
 func RedisExample(user, article string) {
 	var client redis.Client
 
-	postArticle(client, user, "hoge", "http://google.com")
-	articleVote(client, user, article)
+//	postArticle(client, user, "hoge", "http://google.com")
+//	articleVote(client, user, article)
+
+	articles := getArticle(client, 1, "")
+	for _, a := range articles {
+		for k, v := range a {
+			fmt.Printf("%-7s = %s\n", k, v)
+		}
+		fmt.Println()
+	}
+
+	fmt.Println("---------------------------")
+	fmt.Println()
+
+	addRemoveGroups(client, 4, []string{"hoge"}, []string{})
+
+	ga := getGroupArticle(client, "hoge", 1)
+	for _, a := range ga {
+		for k, v := range a {
+			fmt.Printf("%-7s = %s\n", k, v)
+		}
+		fmt.Println()
+	}
 }
 
 func articleVote(client redis.Client, user, article string) {
@@ -103,14 +125,44 @@ func getArticle(client redis.Client, page int, order string) []map[string]string
 		order = "score:"
 	}
 
-	// TODO: 未実装
+	start := (page - 1) * ARTICLES_PER_PAGE
+	end := start + ARTICLES_PER_PAGE - 1
 
-	return []map[string]string{}
+	ids, err := client.Zrevrange(order, start, end)
+	if err != nil {
+		log.Fatal("Zrevrange エラーだよ", err.Error())
+	}
+
+	articles := make([]map[string]string, 0)
+	for _, id := range ids {
+
+		articleData := make(map[string]string, 0)
+		if err := client.Hgetall(string(id), articleData); err != nil {
+			log.Fatal("Hgetall エラーだよ", err.Error())
+		}
+		articleData["id"] = string(id)
+
+		articles = append(articles, articleData)
+	}
+
+	return articles
 }
 
 func addRemoveGroups(client redis.Client, articleID int, toAdd, toRemove []string) {
 
-	// TODO: 未実装
+	article := "article:" + strconv.Itoa(articleID)
+
+	for _, group := range toAdd {
+		if _, err := client.Sadd("group:" + group, []byte(article)); err != nil {
+			log.Fatal("Sadd エラーだよ", err.Error())
+		}
+	}
+
+	for _, group := range toRemove {
+		if _, err := client.Srem("group:" + group, []byte(article)); err != nil {
+			log.Fatal("Srem エラーだよ", err.Error())
+		}
+	}
 }
 
 func getGroupArticle(client redis.Client, group string, page int) []map[string]string {
@@ -118,7 +170,17 @@ func getGroupArticle(client redis.Client, group string, page int) []map[string]s
 
 	key := order + group
 
-	// TODO: 未実装
+	if ok, err := client.Exists(key); err != nil {
+		log.Fatal("Exists エラーだよ", err.Error())
+	} else if !ok {
+		if _, err := client.Zinterstore(key, "group:" + group, order); err != nil {
+			log.Fatal("Zinterstore エラーだよ", err.Error())
+		}
+
+		if _, err := client.Expire(key, 60); err != nil {
+			log.Fatal("Expire エラーだよ", err.Error())
+		}
+	}
 
 	return getArticle(client, page, key)
 }
