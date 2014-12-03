@@ -8,4 +8,6 @@ func main() {
 	fmt.Println("Hello Go Sandbox!")
 
 	cryptoExample()
+
+	genExample()
 }
