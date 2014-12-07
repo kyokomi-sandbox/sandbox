@@ -10,4 +10,6 @@ func main() {
 	cryptoExample()
 
 	genExample()
+
+	sqlExample()
 }
