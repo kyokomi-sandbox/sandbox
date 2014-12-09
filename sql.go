@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"math/rand"
 	"time"
+	"errors"
 )
 
 
@@ -72,3 +73,46 @@ func sqlExample() {
 		}()
 	}
 }
+
+type MItem struct {
+	ItemID int
+	ImageID string
+	ItemType int
+	Name string
+	Detail string
+	Param int
+}
+
+func MItemSelectByID(db *sql.DB, itemID int) (*MItem, error) {
+	q := `
+select
+	item_id
+	,image_id
+	,type
+	,name
+	,detail
+	,param
+from
+	m_item
+where
+	item_id = $1
+`
+	var rows *sql.Rows
+	var err error
+	rows, err = db.Query(q, itemID)
+	if err != nil {
+		return nil, err
+	}
+
+	for rows.Next() {
+		var mItem MItem
+		if err := rows.Scan(&mItem.ItemID, &mItem.ImageID, &mItem.ItemType, &mItem.Name, &mItem.Detail, &mItem.Param); err != nil {
+			fmt.Println(err)
+		}
+		return &mItem, nil
+	}
+
+	return nil, errors.New("not found")
+}
+
+
