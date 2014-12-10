@@ -1,12 +1,13 @@
 package main
 
 import (
-	"github.com/hoisie/redis"
 	"fmt"
-	"time"
 	"log"
-	"strings"
 	"strconv"
+	"strings"
+	"time"
+
+	"github.com/hoisie/redis"
 )
 
 const ONE_WEEK_DAY = 7
@@ -16,8 +17,8 @@ const ARTICLES_PER_PAGE = 25
 func RedisExample(user, article string) {
 	var client redis.Client
 
-//	postArticle(client, user, "hoge", "http://google.com")
-//	articleVote(client, user, article)
+	//	postArticle(client, user, "hoge", "http://google.com")
+	//	articleVote(client, user, article)
 
 	articles := getArticle(client, 1, "")
 	for _, a := range articles {
@@ -65,7 +66,7 @@ func articleVote(client redis.Client, user, article string) {
 	articleID := strings.TrimPrefix(article, "article:")
 	fmt.Println("articleID", articleID)
 
-	ok , err := client.Sadd("voted:" + articleID, []byte(user))
+	ok, err := client.Sadd("voted:"+articleID, []byte(user))
 	if err != nil {
 		log.Fatal("Saddエラーだよ", err.Error())
 	}
@@ -93,7 +94,7 @@ func postArticle(client redis.Client, user, title, link string) string {
 		log.Fatal("Saddエラーだよ", err.Error())
 	}
 
-	if _, err := client.Expire(voted, int64(ONE_WEEK_DAY * time.Second)); err != nil {
+	if _, err := client.Expire(voted, int64(ONE_WEEK_DAY*time.Second)); err != nil {
 		log.Fatal("Expireエラーだよ", err.Error())
 	}
 	now := time.Now()
@@ -101,16 +102,16 @@ func postArticle(client redis.Client, user, title, link string) string {
 	fmt.Println("articleID", articleID)
 
 	if err := client.Hmset(article, map[string]string{
-			"title": title,
-			"link": link,
-			"poster": user,
-			"time": now.String(),
-			"votes": "1",
-		}); err != nil {
+		"title":  title,
+		"link":   link,
+		"poster": user,
+		"time":   now.String(),
+		"votes":  "1",
+	}); err != nil {
 		log.Fatal("Hmsetエラーだよ", err.Error())
 	}
 
-	if _, err := client.Zadd("score:", []byte(article), float64(now.Unix() + VOTE_SCORE)); err != nil {
+	if _, err := client.Zadd("score:", []byte(article), float64(now.Unix()+VOTE_SCORE)); err != nil {
 		log.Fatal("Zaddエラーだよ", err.Error())
 	}
 	if _, err := client.Zadd("time:", []byte(article), float64(now.Unix())); err != nil {
@@ -153,13 +154,13 @@ func addRemoveGroups(client redis.Client, articleID int, toAdd, toRemove []strin
 	article := "article:" + strconv.Itoa(articleID)
 
 	for _, group := range toAdd {
-		if _, err := client.Sadd("group:" + group, []byte(article)); err != nil {
+		if _, err := client.Sadd("group:"+group, []byte(article)); err != nil {
 			log.Fatal("Sadd エラーだよ", err.Error())
 		}
 	}
 
 	for _, group := range toRemove {
-		if _, err := client.Srem("group:" + group, []byte(article)); err != nil {
+		if _, err := client.Srem("group:"+group, []byte(article)); err != nil {
 			log.Fatal("Srem エラーだよ", err.Error())
 		}
 	}
@@ -173,9 +174,9 @@ func getGroupArticle(client redis.Client, group string, page int) []map[string]s
 	if ok, err := client.Exists(key); err != nil {
 		log.Fatal("Exists エラーだよ", err.Error())
 	} else if !ok {
-		if _, err := client.Zinterstore(key, "group:" + group, order); err != nil {
-			log.Fatal("Zinterstore エラーだよ", err.Error())
-		}
+		//if _, err := client.Zinterstore(key, "group:" + group, order); err != nil {
+		//	log.Fatal("Zinterstore エラーだよ", err.Error())
+		//}
 
 		if _, err := client.Expire(key, 60); err != nil {
 			log.Fatal("Expire エラーだよ", err.Error())
