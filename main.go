@@ -12,4 +12,6 @@ func main() {
 	genExample()
 
 	sqlExample()
+
+	proxyExample2()
 }
