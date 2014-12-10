@@ -7,11 +7,11 @@ import (
 func main() {
 	fmt.Println("Hello Go Sandbox!")
 
-	cryptoExample()
+//	cryptoExample()
+//
+//	genExample()
+//
+//	sqlExample()
 
-	genExample()
-
-	sqlExample()
-
-	proxyExample2()
+	proxyExample()
 }
