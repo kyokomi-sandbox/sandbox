@@ -9,11 +9,11 @@ import (
 	MQTT "git.eclipse.org/gitroot/paho/org.eclipse.paho.mqtt.golang.git"
 )
 
-func main() {
-	host := "hoge.mqtt.shiguredo.jp"
+func mqttExample() {
+	host := "lite.mqtt.shiguredo.jp"
 	port := 1883
-	user := "example@github"
-	password := "<password>"
+	user := "handson"
+	password := "handson201412"
 
 	// 接続用の設定を作成します
 	opts := MQTT.NewClientOptions()
@@ -32,15 +32,21 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	log.Fatalln(Subscribe(client))
 }
 
 func onMessageReceived(client *MQTT.MqttClient, message MQTT.Message) {
 	fmt.Printf("Received message on topic: %s\n", message.Topic())
 	fmt.Printf("Message: %s\n", message.Payload())
+
+	if string(message.Payload()) == "ぬるぽ" {
+		Publish(client, "ガッ")
+	}
 }
 
 func Subscribe(client *MQTT.MqttClient) error {
-	topic := "example@github/a/b"
+	topic := "handson/say"
 	qos := 0
 
 	// Subscribeするtopicを設定します
@@ -62,10 +68,9 @@ func Subscribe(client *MQTT.MqttClient) error {
 	}
 }
 
-func Publish(client *MQTT.MqttClient) error {
-	topic := "example@github/a/b"
+func Publish(client *MQTT.MqttClient, message string) error {
+	topic := "handson/say"
 	qos := 0
-	message := "MQTT from golang"
 
 	receipt := client.Publish(MQTT.QoS(qos), topic, message)
 	<-receipt // Publish成功を待ち受ける
