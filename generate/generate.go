@@ -1,9 +1,9 @@
 package generate
 
 // +gen slice:"Where,Count,GroupBy[string]"
-type MySliceType struct{
-	ID int64
-	Name string
+type MySliceType struct {
+	ID        int64
+	Name      string
 	GroupName string
 }
 

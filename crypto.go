@@ -1,12 +1,12 @@
 package main
 
 import (
-	"fmt"
+	"crypto/md5"
 	"crypto/sha1"
-	"io"
 	"crypto/sha256"
 	"crypto/sha512"
-	"crypto/md5"
+	"fmt"
+	"io"
 )
 
 func cryptoExample() {

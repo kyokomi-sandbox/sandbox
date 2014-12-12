@@ -1,8 +1,8 @@
 package main
 
 import (
-	"testing"
 	"strings"
+	"testing"
 )
 
 func TestCreateTemplateTree(t *testing.T) {
@@ -24,4 +24,3 @@ func TestCreateTemplateTree(t *testing.T) {
 		t.Errorf("template execute result contains %s", b)
 	}
 }
-

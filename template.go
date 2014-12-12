@@ -1,10 +1,11 @@
 package main
 
 import (
-	"fmt"
-	"text/template"
 	"bytes"
-	"log")
+	"fmt"
+	"log"
+	"text/template"
+)
 
 const baseTemplateText = `
 Base {{.A}} World {{template "sub" .}}
@@ -40,7 +41,7 @@ func CreateTemplateTree(text1, text2 string) *ExecuteData {
 
 	fmt.Println("Lookup", base.Lookup("sub"))
 
-	return &ExecuteData {
+	return &ExecuteData{
 		A: text1,
 		B: text2,
 		t: base,

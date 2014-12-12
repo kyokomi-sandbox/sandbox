@@ -4,15 +4,14 @@ import (
 	_ "github.com/lib/pq"
 
 	"database/sql"
-	"log"
+	"errors"
 	"fmt"
+	"log"
 	"math/rand"
 	"time"
-	"errors"
 )
 
-
-const DROP_TABLE   = `DROP TABLE TEST_TBL;`
+const DROP_TABLE = `DROP TABLE TEST_TBL;`
 const CREATE_TABLE = `
 CREATE TABLE TEST_TBL (
 	ID int primary key,
@@ -46,14 +45,14 @@ func sqlExample() {
 		log.Fatalln(err)
 	}
 
-	defer func(){
+	defer func() {
 		fmt.Println("close.")
 		if err := db.Close(); err != nil {
 			log.Fatalln(err)
 		}
 	}()
 
-//	resetDB(db)
+	//	resetDB(db)
 
 	if tx, err := db.Begin(); err != nil {
 		log.Fatalln("begin ", err)
@@ -65,7 +64,7 @@ func sqlExample() {
 			fmt.Printf("%+v\n", res)
 		}
 
-		defer func(){
+		defer func() {
 			fmt.Println("commit.")
 			if err := tx.Commit(); err != nil {
 				log.Fatalln(err)
@@ -75,12 +74,12 @@ func sqlExample() {
 }
 
 type MItem struct {
-	ItemID int
-	ImageID string
+	ItemID   int
+	ImageID  string
 	ItemType int
-	Name string
-	Detail string
-	Param int
+	Name     string
+	Detail   string
+	Param    int
 }
 
 func MItemSelectByID(db *sql.DB, itemID int) (*MItem, error) {
@@ -114,5 +113,3 @@ where
 
 	return nil, errors.New("not found")
 }
-
-

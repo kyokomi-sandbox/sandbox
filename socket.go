@@ -1,9 +1,10 @@
 package main
 
 import (
-	socketio "github.com/googollee/go-socket.io"
 	"log"
 	"net/http"
+
+	socketio "github.com/googollee/go-socket.io"
 )
 
 func socketServer() {
