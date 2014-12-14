@@ -11,6 +11,10 @@ import (
 )
 
 func main() {
+	textExample()
+}
+
+func server() {
 	rd := render.New()
 	d := docomo.NewDialogue()
 
