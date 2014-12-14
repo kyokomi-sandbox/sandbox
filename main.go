@@ -6,25 +6,26 @@ import (
 	"io"
 	"github.com/zenazn/goji/web"
 	"net/http"
-	"github.com/unrolled/render"
-	"github.com/kyokomi/GoSandbox/docomo"
+	docomo "github.com/kyokomi/go-docomo"
+	"log"
 )
 
 func main() {
 	textExample()
+
+	d := docomo.New()
+	res, err := d.SendImage("/Users/kyokomi/Downloads/menu_shop.png")
+//	res, err := d.SendImage("/Users/kyokomi/src/github.com/kyokomi/GoSandbox/image2.png")
+	if err != nil {
+		log.Println(err)
+	}
+	fmt.Println(string(res))
 }
 
 func server() {
-	rd := render.New()
-	d := docomo.NewDialogue()
-
 	goji.Get("/", func (c web.C, w http.ResponseWriter, r *http.Request) {
 		fmt.Println("hello")
 		io.WriteString(w, "hello")
-	})
-	goji.Get("/zatsudan/:message", func (c web.C, w http.ResponseWriter, r *http.Request) {
-		res := d.Send(c.URLParams["message"])
-		rd.JSON(w, http.StatusOK, string(res))
 	})
 
 	goji.Serve()
