@@ -6,20 +6,12 @@ import (
 	"io"
 	"github.com/zenazn/goji/web"
 	"net/http"
-	docomo "github.com/kyokomi/go-docomo"
-	"log"
+	"github.com/KyokomiSandbox/GoSandbox/stringer"
 )
 
 func main() {
 	textExample()
-
-	d := docomo.New()
-	res, err := d.SendImage("/Users/kyokomi/Downloads/menu_shop.png")
-//	res, err := d.SendImage("/Users/kyokomi/src/github.com/kyokomi/GoSandbox/image2.png")
-	if err != nil {
-		log.Println(err)
-	}
-	fmt.Println(string(res))
+	stringer.StringerExample()
 }
 
 func server() {
