@@ -20,6 +20,7 @@ var (
 var enc   = codec.NewEncoder(buf, mh)
 var dec   = codec.NewDecoder(bufR, mh)
 
+//go:generate msgp
 type MsgPackSample struct {
 	Name string
 	Num int

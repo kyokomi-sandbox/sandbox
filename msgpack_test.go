@@ -19,19 +19,19 @@ var m = MsgPackSample{
 	Message: "AngelBeats!",
 }
 
-func BenchmarkCodec(b *testing.B) {
+func BenchmarkMsgPackSampleCodec(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		packUnPackCodec(m)
 	}
 }
 
-func BenchmarkMsgPa(b *testing.B) {
+func BenchmarkMsgPackSampleMsgPa(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		packUnPackMsgPack(m)
 	}
 }
 
-func BenchmarkJsonc(b *testing.B) {
+func BenchmarkMsgPackSampleJsonc(b *testing.B) {
 
 	buf := &bytes.Buffer{}
 	bufR := &bytes.Buffer{}
