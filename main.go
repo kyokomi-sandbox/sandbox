@@ -5,16 +5,15 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/KyokomiSandbox/GoSandbox/stringer"
 	"github.com/zenazn/goji"
 	"github.com/zenazn/goji/web"
 )
 
 func main() {
-	textExample()
-	stringer.StringerExample()
+//	textExample()
+//	stringer.StringerExample()
 
-	mqttExample()
+	msgPackExample()
 }
 
 func server() {
