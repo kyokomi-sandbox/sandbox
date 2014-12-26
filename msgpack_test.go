@@ -4,6 +4,8 @@ import (
 	"testing"
 	"encoding/json"
 	"bytes"
+	msgpack "gopkg.in/vmihailenco/msgpack.v1"
+	"log"
 )
 
 /**
@@ -14,43 +16,85 @@ ok  	github.com/kyokomi/GoSandbox	5.240s
  */
 
 var m = MsgPackSample{
-	Name: "ユイにゃん",
-	Num: 17,
+	Name: "麻婆豆腐",
+	Num: 80,
 	Message: "AngelBeats!",
 }
 
-func BenchmarkMsgPackSampleCodec(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		packUnPackCodec(m)
-	}
-}
+func BenchmarkMsgPackEncode(b *testing.B) {
+	var buf   = &bytes.Buffer{}
+	var enc   = msgpack.NewEncoder(buf)
 
-func BenchmarkMsgPackSampleMsgPa(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		packUnPackMsgPack(m)
-	}
-}
-
-func BenchmarkMsgPackSampleJsonc(b *testing.B) {
-
-	buf := &bytes.Buffer{}
-	bufR := &bytes.Buffer{}
-	enc := json.NewEncoder(buf)
-	dec := json.NewDecoder(bufR)
-
+	b.ReportAllocs()
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
 		buf.Reset()
-		enc.Encode(&m)
-
-		bufR.Write(buf.Bytes())
-
-		var m2 MsgPackSample
-		dec.Decode(&m2)
-
-		bufR.Reset()
+		if err := enc.Encode(&m); err != nil {
+			log.Fatalln(err)
+		}
 	}
 }
 
+func BenchmarkMsgPackDecode(b *testing.B) {
+	data, err := msgpack.Marshal(&m)
+	if err != nil {
+		log.Fatalln(err)
+	}
 
+	var buf = &bytes.Buffer{}
+	var dec  = msgpack.NewDecoder(buf)
+	var m2 MsgPackSample
+
+	b.ReportAllocs()
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+
+		buf.Write(data)
+
+		if err := dec.Decode(&m2); err != nil {
+			log.Fatalln(err)
+		}
+	}
+}
+
+func BenchmarkJsonEncode(b *testing.B) {
+
+	buf := &bytes.Buffer{}
+	enc := json.NewEncoder(buf)
+
+	b.ReportAllocs()
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		buf.Reset()
+		if err := enc.Encode(&m); err != nil {
+			log.Fatalln(err)
+		}
+	}
+}
+
+func BenchmarkJsonDecode(b *testing.B) {
+
+	buf := &bytes.Buffer{}
+	dec := json.NewDecoder(buf)
+	var m2 MsgPackSample
+
+	data, err := json.Marshal(&m)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	b.ReportAllocs()
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+
+		buf.Write(data)
+
+		if err := dec.Decode(&m2); err != nil {
+			log.Fatalln(err)
+		}
+	}
+}
