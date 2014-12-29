@@ -2,10 +2,18 @@ package main
 
 import (
 	"fmt"
-	"github.com/kyokomi-sandbox/go-sandbox/example/gogenerate/fruit"
+
 	"github.com/k0kubun/pp"
+	"github.com/kyokomi-sandbox/go-sandbox/example/gogenerate/fruit"
 	"github.com/kyokomi-sandbox/go-sandbox/example/gogenerate/nepu"
 )
+
+//go:generate foobar
+type Hoge struct {
+	Name    string
+	Num     int
+	Message string
+}
 
 var memo = `
 # gen手順
