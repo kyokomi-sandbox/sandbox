@@ -8,8 +8,8 @@ import (
 	"os"
 )
 
-func bzip2Exec() {
-	bz2File, err := os.Open("text.tar.bz2")
+func main() {
+	bz2File, err := os.Open("./sample/text.tar.bz2")
 	if err != nil {
 		log.Fatal(err)
 	}

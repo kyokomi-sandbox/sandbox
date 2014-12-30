@@ -7,13 +7,24 @@ import (
 	"os"
 	"strings"
 	"time"
+	"io"
 )
 
-func scanLines() {
-	scanner := bufio.NewScanner(os.Stdin)
+func main() {
+
+	scanLines(strings.NewReader("hogehogehoge\nfugafuga"))
+
+	scanCustomSplit()
+
+	bufioWriter()
+}
+
+func scanLines(r io.Reader) {
+	scanner := bufio.NewScanner(r)
 	for scanner.Scan() {
 		fmt.Println(scanner.Text())
 	}
+
 	if err := scanner.Err(); err != nil {
 		fmt.Fprintln(os.Stderr, "reading standard input:", err)
 	}

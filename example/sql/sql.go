@@ -38,7 +38,7 @@ func resetDB(db *sql.DB) {
 	}
 }
 
-func sqlExample() {
+func main() {
 
 	db, err := sql.Open("postgres", "user=postgres host=localhost port=5432 dbname=example_db sslmode=disable")
 	if err != nil {

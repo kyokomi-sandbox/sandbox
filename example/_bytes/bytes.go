@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func bytesExec() {
+func main() {
 	var buf bytes.Buffer
 
 	buf.WriteString("hogehoge")

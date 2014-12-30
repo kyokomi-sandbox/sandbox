@@ -9,9 +9,10 @@ import (
 	"io"
 )
 
-func cryptoExample() {
+func main() {
 	cryptoSHA1Example()
 	cryptoSHA2Example()
+	cryptoMD5Example()
 }
 
 func cryptoSHA1Example() {

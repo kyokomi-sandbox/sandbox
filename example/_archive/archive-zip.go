@@ -9,8 +9,8 @@ import (
 	"os"
 )
 
-func readerExample() {
-	r, err := zip.OpenReader("test.zip")
+func readerZip() {
+	r, err := zip.OpenReader("./output/test.zip")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -31,14 +31,14 @@ func readerExample() {
 	}
 }
 
-func writerExample() {
-	f, err := os.Create("test.zip")
+func writerZip() {
+	f, err := os.Create("./output/test.zip")
 	if err != nil {
 		log.Fatal(err)
 	}
 	zw := zip.NewWriter(f)
 
-	baseDir := "./_test/"
+	baseDir := "./sample/"
 
 	files, err := ioutil.ReadDir(baseDir)
 	if err != nil {

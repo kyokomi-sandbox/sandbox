@@ -14,7 +14,7 @@ const ONE_WEEK_DAY = 7
 const VOTE_SCORE = 432
 const ARTICLES_PER_PAGE = 25
 
-func RedisExample(user, article string) {
+func main() {
 	var client redis.Client
 
 	//	postArticle(client, user, "hoge", "http://google.com")

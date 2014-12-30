@@ -4,9 +4,10 @@ import (
 	"io"
 	"os"
 	"text/tabwriter"
+	"fmt"
 )
 
-func textExample() {
+func main() {
 
 	// 4タブ
 	w1 := tabwriter.NewWriter(os.Stdout, 0, 4, 0, '\t', 0)
@@ -32,4 +33,6 @@ func textExample() {
 	w5 := tabwriter.NewWriter(os.Stdout, 5, 0, 1, ' ', 0)
 	io.WriteString(w5, "aaaaa\tbbbbb\tccccc\tddddd\teeeee\n")
 	w5.Flush()
+
+	fmt.Println(CreateTemplateTree("hoge", "fuga").Execute())
 }

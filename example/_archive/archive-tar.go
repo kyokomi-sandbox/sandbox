@@ -11,15 +11,15 @@ import (
 	"strings"
 )
 
-func tarWrite() {
+func writerTar() {
 
-	f, err := os.Create("test.tar")
+	f, err := os.Create("./output/test.tar")
 	if err != nil {
 		log.Fatal(err)
 	}
 	tw := tar.NewWriter(f)
 
-	baseDir := "./_test/"
+	baseDir := "./sample/"
 
 	files, err := ioutil.ReadDir(baseDir)
 	if err != nil {
@@ -59,11 +59,11 @@ func tarWrite() {
 	}
 }
 
-func tarRead() {
+func readerTar() {
 	fmt.Println("Hello Go Sandbox!")
 
 	// tarファイルを読み込み
-	file, err := ioutil.ReadFile("test.tar")
+	file, err := ioutil.ReadFile("output/test.tar")
 	if err != nil {
 		log.Fatal(err)
 	}

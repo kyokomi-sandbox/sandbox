@@ -14,7 +14,7 @@ func numGoroutine() interface{} {
 	return interface{}(runtime.NumGoroutine())
 }
 
-func gorilla() {
+func main() {
 
 	r := mux.NewRouter()
 	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
