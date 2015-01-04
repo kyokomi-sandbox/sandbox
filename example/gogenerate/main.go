@@ -8,7 +8,7 @@ import (
 	"github.com/kyokomi-sandbox/go-sandbox/example/gogenerate/nepu"
 )
 
-//go:generate foobar
+//go:generate genexample
 type Hoge struct {
 	Name    string
 	Num     int
