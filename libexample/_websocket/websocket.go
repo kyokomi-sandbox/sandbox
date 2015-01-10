@@ -1,17 +1,18 @@
 package main
 
 import (
-	"code.google.com/p/go.net/websocket"
+	"crypto/tls"
+	"encoding/json"
+	"errors"
+	"io/ioutil"
 	"log"
+	"net"
 	"net/http"
 	"net/url"
-	"encoding/json"
-	"io/ioutil"
-	"errors"
 	"strconv"
+
+	"code.google.com/p/go.net/websocket"
 	"github.com/k0kubun/pp"
-	"net"
-	"crypto/tls"
 )
 
 // @_apiCall 'rtm.start', {agent: 'node-slack'}, @_onLogin
@@ -26,12 +27,13 @@ func main() {
 
 type SlackBotClient struct {
 	authenticated bool
-	socketURL string
+	socketURL     string
 	// Team
-	teamID string
-	teamName string
+	teamID     string
+	teamName   string
 	teamDomain string
 }
+
 var slackBotClient SlackBotClient
 
 func onLogin(data []byte) {
@@ -45,7 +47,7 @@ func onLogin(data []byte) {
 		log.Fatalln(errors.New("login error"))
 		return
 	}
-//	pp.Println(s)
+	//	pp.Println(s)
 
 	slackBotClient.authenticated = true
 	slackBotClient.socketURL = s.URL
@@ -100,24 +102,24 @@ func connect() {
 	pp.Println(wsConn)
 	return
 
-//	wsOpen, err := websocket.Dial(slackBotClient.socketURL, "", origin)
-//	if err != nil {
-//		log.Fatal(err)
-//	}
-//
-//	message := []byte("hello, world!")
-//	_, err = wsOpen.Write(message)
-//	if err != nil {
-//		log.Fatal(err)
-//	}
-//	fmt.Printf("Send: %s\n", message)
-//
-//	var msg = make([]byte, 512)
-//	_, err = wsOpen.Read(msg)
-//	if err != nil {
-//		log.Fatal(err)
-//	}
-//	fmt.Printf("Receive: %s\n", msg)
+	//	wsOpen, err := websocket.Dial(slackBotClient.socketURL, "", origin)
+	//	if err != nil {
+	//		log.Fatal(err)
+	//	}
+	//
+	//	message := []byte("hello, world!")
+	//	_, err = wsOpen.Write(message)
+	//	if err != nil {
+	//		log.Fatal(err)
+	//	}
+	//	fmt.Printf("Send: %s\n", message)
+	//
+	//	var msg = make([]byte, 512)
+	//	_, err = wsOpen.Read(msg)
+	//	if err != nil {
+	//		log.Fatal(err)
+	//	}
+	//	fmt.Printf("Receive: %s\n", msg)
 }
 
 type ApiResponse struct {
@@ -128,7 +130,7 @@ type ApiResponse struct {
 const SLACK_API_URL = "https://api.slack.com/api/"
 const SLACK_TOKEN = "xoxb-3278979370-hcGgEzF2fNOlO05gixHbCeAe"
 
-func apiCall(method string, params url.Values, callback func ([]byte)) error {
+func apiCall(method string, params url.Values, callback func([]byte)) error {
 	params.Set("token", SLACK_TOKEN)
 
 	u := SLACK_API_URL + method

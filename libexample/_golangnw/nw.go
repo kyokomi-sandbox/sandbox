@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	nw "github.com/lonnc/golang-nw"
-	"net/http"
 	"log"
+	"net/http"
+
+	nw "github.com/lonnc/golang-nw"
 )
 
 /*
@@ -40,7 +41,7 @@ nodewebkitの中身をgolangで書くやつ。
 [11870:1229/112848:INFO:CONSOLE(42)] "Uncaught TypeError: Cannot set property 'x' of null", source: file:///var/folders/_9/7ppk1m3934db1h84qrxlvf980000gn/T/.org.chromium.Chromium.BdrNIn/script.js (42)
 ```
 
- */
+*/
 func main() {
 
 	// Setup our handler
@@ -52,7 +53,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
 
 	// Pick a random localhost port, start listening for http requests using default handler
 	// and send a message back to node-webkit to redirect

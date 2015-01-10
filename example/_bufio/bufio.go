@@ -4,10 +4,10 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
+	"io"
 	"os"
 	"strings"
 	"time"
-	"io"
 )
 
 func main() {

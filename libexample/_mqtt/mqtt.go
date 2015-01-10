@@ -29,7 +29,7 @@ var config = MQTTConfig{
 
 $ mqttcli pub -t kyokomi@github/say -m test
 
- */
+*/
 func main() {
 
 	// 接続用の設定を作成します

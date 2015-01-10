@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"index/suffixarray"
 	"sort"
+
 	"github.com/cloudflare/ahocorasick"
 	trigram "github.com/dgryski/go-trigram"
 )
@@ -25,7 +26,6 @@ func _ahocorasick() string {
 	found := m.Match([]byte(`earth`))
 	return fmt.Sprintln("found patterns", found)
 }
-
 
 func _indexSuffixArray() string {
 	docs := []string{

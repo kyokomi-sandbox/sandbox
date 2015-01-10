@@ -42,7 +42,7 @@ func defaultHttp() {
 	}
 	proxyHandler := httputil.NewSingleHostReverseProxy(dst)
 	server := http.Server{
-		Addr: srcAddr,
+		Addr:    srcAddr,
 		Handler: proxyHandler,
 	}
 	log.Fatalln(server.ListenAndServe())

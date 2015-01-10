@@ -1,8 +1,9 @@
 package main
 
 import (
-	termbox "github.com/nsf/termbox-go"
 	"fmt"
+
+	termbox "github.com/nsf/termbox-go"
 )
 
 func main() {

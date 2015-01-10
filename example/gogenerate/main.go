@@ -31,6 +31,7 @@ $ go get golang.org/x/tools/cmd/stringer
 $ cd fruit
 $ go generate
 `
+
 func main() {
 	fmt.Println("---------------------------------------")
 	fmt.Println(memo)

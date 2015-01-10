@@ -522,8 +522,8 @@ loop:
 
 			if ev.Key == termbox.KeyCtrlC && ctrlxpressed {
 				chmap := []termbox.InputMode{
-						termbox.InputEsc | termbox.InputMouse,
-						termbox.InputAlt | termbox.InputMouse,
+					termbox.InputEsc | termbox.InputMouse,
+					termbox.InputAlt | termbox.InputMouse,
 					termbox.InputEsc,
 					termbox.InputAlt,
 				}

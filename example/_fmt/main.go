@@ -10,4 +10,3 @@ func main() {
 	}
 	fmt.Println("Scan: ", c.scan("hoge"))
 }
-

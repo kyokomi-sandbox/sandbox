@@ -1,7 +1,7 @@
 package main
 
 type SlackResponse struct {
-	Ok            bool   `json:"ok"`
+	Ok   bool `json:"ok"`
 	Bots []struct {
 		Deleted bool `json:"deleted"`
 		Icons   struct {

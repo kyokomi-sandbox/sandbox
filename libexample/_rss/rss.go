@@ -1,13 +1,14 @@
 package main
 
 import (
-	rss "github.com/jteeuwen/go-pkg-rss"
-	"log"
 	"fmt"
+	"log"
+
+	rss "github.com/jteeuwen/go-pkg-rss"
 	"github.com/k0kubun/pp"
 )
 
-func main () {
+func main() {
 	rssExample()
 }
 

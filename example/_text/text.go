@@ -1,10 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"os"
 	"text/tabwriter"
-	"fmt"
 )
 
 func main() {
