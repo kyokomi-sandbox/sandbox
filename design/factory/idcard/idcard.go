@@ -1,14 +1,15 @@
-package base
+package idcard
 
 import (
 	"fmt"
+	"github.com/kyokomi-sandbox/go-sandbox/design/factory/base"
 )
 
 type IDCard struct {
 	owner string
 }
 
-func NewIDCard(owner string) Product {
+func NewIDCard(owner string) base.Product {
 	fmt.Println(owner + "のカードを作ります。")
 	i := IDCard{}
 	i.owner = owner
@@ -22,33 +23,33 @@ func (i IDCard) Use() {
 func (i IDCard) Owner() string {
 	return i.owner
 }
-var _ Product = (*IDCard)(nil)
+var _ base.Product = (*IDCard)(nil)
 
 type IDCardFactory struct {
 	owners []string
 }
 
-func newIDCardFactory() Factory {
+func newIDCardFactory() base.Factory {
 	i := IDCardFactory{}
 	i.owners = make([]string, 0)
 	return i
 }
 
-func NewIDCardFactory() AbstractFactory {
+func NewIDCardFactory() base.AbstractFactory {
 	i := newIDCardFactory()
-	f := NewAbstractFactory(i)
+	f := base.NewAbstractFactory(i)
 	return f
 }
 
-func (i IDCardFactory) createProduct(owner string) Product {
+func (i IDCardFactory) CreateProduct(owner string) base.Product {
 	return NewIDCard(owner)
 }
 
-func (i IDCardFactory) registerProduct(p Product) {
+func (i IDCardFactory) RegisterProduct(p base.Product) {
 	i.owners = append(i.owners, (p.(IDCard)).Owner())
 }
 
 func (i IDCardFactory) Owners() []string {
 	return i.owners
 }
-var _ Factory = (*IDCardFactory)(nil)
+var _ base.Factory = (*IDCardFactory)(nil)

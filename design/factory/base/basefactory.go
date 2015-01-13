@@ -5,8 +5,8 @@ type Product interface {
 }
 
 type Factory interface {
-	createProduct(owner string) Product
-	registerProduct(p Product)
+	CreateProduct(owner string) Product
+	RegisterProduct(p Product)
 }
 
 type AbstractFactory struct {
@@ -18,7 +18,7 @@ func NewAbstractFactory(f Factory) AbstractFactory {
 }
 
 func (f AbstractFactory) Create(owner string) Product {
-	p := f.factory.createProduct(owner)
-	f.factory.registerProduct(p)
+	p := f.factory.CreateProduct(owner)
+	f.factory.RegisterProduct(p)
 	return p
 }
