@@ -8,7 +8,10 @@ import (
 )
 
 func main() {
+	tabWriterSample()
+}
 
+func tabWriterSample() {
 	// 4タブ
 	w1 := tabwriter.NewWriter(os.Stdout, 0, 4, 0, '\t', 0)
 	io.WriteString(w1, "a\tbcccs\tc\td\te\n")
