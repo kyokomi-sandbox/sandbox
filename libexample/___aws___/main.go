@@ -38,17 +38,33 @@ type Size struct {
 }
 
 func main() {
+
+	c1 := accessKeyCreds()
+	printGetObject(c1)
+	
+	// TODO: Credentials（~/.aws/credentials）
+	
+	c3 := iamCreds()
+	printGetObject(c3)
+}
+
+func accessKeyCreds() *s3.S3 {
 	accessKey := os.Getenv("AWS_ACCESS_KEY")
 	secretKey := os.Getenv("AWS_SECRET_KEY")
-
 	creds := aws.Creds(accessKey, secretKey, "")
-	c := s3.New(creds, "ap-northeast-1", nil)
+	return s3.New(creds, "ap-northeast-1", nil)
+}
 
+func iamCreds() *s3.S3 {
+	return s3.New(aws.IAMCreds(), "ap-northeast-1", nil)
+}
+
+func printGetObject(client *s3.S3) {
 	req := s3.GetObjectRequest{}
 	req.Bucket = aws.String("kyokomi-foo")
 	req.Key = aws.String("bar/media.json")
 
-	res, err := c.GetObject(&req)
+	res, err := client.GetObject(&req)
 	if err != nil {
 		log.Fatalln(err)
 	}
