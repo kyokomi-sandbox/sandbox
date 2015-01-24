@@ -39,11 +39,15 @@ type Size struct {
 
 func main() {
 
+	fmt.Println("============== Start1 ================")
 	c1 := accessKeyCreds()
 	printGetObject(c1)
-	
-	// TODO: Credentials（~/.aws/credentials）
-	
+
+	fmt.Println("============== Start2 ================")
+	c2 := credentials()
+	printGetObject(c2)
+
+	fmt.Println("============== Start3 ================")
 	c3 := iamCreds()
 	printGetObject(c3)
 }
@@ -57,6 +61,17 @@ func accessKeyCreds() *s3.S3 {
 
 func iamCreds() *s3.S3 {
 	return s3.New(aws.IAMCreds(), "ap-northeast-1", nil)
+}
+
+func credentials() *s3.S3 {
+	// 指定なしで、~/.aws/credentialsのdefaultになる
+	creds, err := aws.ProfileCreds("", "", 0)
+	if err != nil {
+		log.SetFlags(log.Llongfile)
+		log.Fatalln(err)
+	}
+
+	return s3.New(creds, "ap-northeast-1", nil)
 }
 
 func printGetObject(client *s3.S3) {
