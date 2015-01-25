@@ -6,6 +6,7 @@ import (
 	"flag"
 	"strings"
 )
+
 func main() {
 
 	var host string
