@@ -1,14 +1,13 @@
 package main
 
 import (
+	"fmt"
+	"log"
+	"os"
+
 	"github.com/stripe/aws-go/aws"
 	"github.com/stripe/aws-go/gen/s3"
-	"log"
 	"io/ioutil"
-	"os"
-	"fmt"
-	"encoding/json"
-	"github.com/k0kubun/pp"
 )
 
 type Media struct {
@@ -20,15 +19,15 @@ type Media struct {
 	MediaURL      string `json:"media_url"`
 	MediaURLHTTPS string `json:"media_url_https"`
 	Sizes         Sizes  `json:"sizes"`
-	Type string `json:"type"`
-	URL  string `json:"url"`
+	Type          string `json:"type"`
+	URL           string `json:"url"`
 }
 
 type Sizes struct {
-	Large Size  `json:"large"`
+	Large  Size `json:"large"`
 	Medium Size `json:"medium"`
-	Small Size  `json:"small"`
-	Thumb Size  `json:"thumb"`
+	Small  Size `json:"small"`
+	Thumb  Size `json:"thumb"`
 }
 
 type Size struct {
@@ -74,6 +73,19 @@ func credentials() *s3.S3 {
 	return s3.New(creds, "ap-northeast-1", nil)
 }
 
+func getObject(client *s3.S3) {
+	req := s3.GetObjectRequest{}
+	req.Bucket = aws.String("kyokomi-foo")
+	req.Key = aws.String("bar/media.json")
+
+	res, err := client.GetObject(&req)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	defer res.Body.Close()
+}
+
 func printGetObject(client *s3.S3) {
 	req := s3.GetObjectRequest{}
 	req.Bucket = aws.String("kyokomi-foo")
@@ -92,11 +104,4 @@ func printGetObject(client *s3.S3) {
 	}
 
 	fmt.Println(string(data))
-
-	var m Media
-	if err := json.Unmarshal(data, &m); err != nil {
-		log.Fatalln(err)
-	}
-
-	pp.Println(m)
 }
