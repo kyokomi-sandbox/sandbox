@@ -1,26 +1,44 @@
 package main
 
 import (
-	"fmt"
-	"github.com/zenazn/goji"
-	"net/http"
-	"github.com/zenazn/goji/web"
 	"encoding/json"
-	"io/ioutil"
+	"fmt"
 	"io"
+	"io/ioutil"
+	"net/http"
 	"strings"
+	"sync"
+
+	"log"
+
+	"github.com/zenazn/goji"
+	"github.com/zenazn/goji/web"
 )
 
 type Comment struct {
 	Author string `json:"author"`
-	Text string `json:"text"`
+	Text   string `json:"text"`
 }
 
+var fileMutex sync.RWMutex
 var comments []Comment
 
 func init() {
-	comments = make([]Comment, 0)
-	comments = append(comments, Comment{Author: "Pete Hunt", Text: "Hey there!"})
+
+	// _comments.jsonを読み込む。もし1レコードもなかったら初期コメントを入れる
+
+	data, err := ioutil.ReadFile("_comments.json")
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	if err := json.Unmarshal(data, &comments); err != nil {
+		log.Fatalln(err)
+	}
+
+	if len(comments) < 1 {
+		comments = append(comments, Comment{Author: "Pete Hunt", Text: "Hey there!"})
+	}
 }
 
 func main() {
@@ -34,25 +52,49 @@ func main() {
 }
 
 func GetComments(_ web.C, w http.ResponseWriter, _ *http.Request) {
-	data ,err := json.Marshal(comments)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	io.WriteString(w, string(data))
+	responseWriteComments(w)
 }
 
 func PostComments(_ web.C, w http.ResponseWriter, r *http.Request) {
+
 	reqData, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
+	// Commentを追加
+	comment := parseComment(reqData)
+	comments = append(comments, comment)
+
+	responseWriteComments(w)
+}
+
+func responseWriteComments(w http.ResponseWriter) {
+	data, err := json.Marshal(comments)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	// 雑にFileを更新（DBとかRedisでもいい）
+	go func(data []byte) {
+		fileMutex.Lock()
+		defer fileMutex.Unlock()
+
+		if err := ioutil.WriteFile("_comments.json", data, 0644); err != nil {
+			log.Println("file write error ", err)
+		}
+	}(data)
+
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	io.WriteString(w, string(data))
+}
+
+// author=foo&text=bar の形式でpostされる
+func parseComment(data []byte) Comment {
 	var comment Comment
-	params := strings.Split(string(reqData), "&")
+	params := strings.Split(string(data), "&")
 	for _, param := range params {
 		keyVal := strings.Split(param, "=")
 		switch keyVal[0] {
@@ -62,14 +104,5 @@ func PostComments(_ web.C, w http.ResponseWriter, r *http.Request) {
 			comment.Text = keyVal[1]
 		}
 	}
-	comments = append(comments, comment)
-
-	data ,err := json.Marshal(comments)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	io.WriteString(w, string(data))
+	return comment
 }
