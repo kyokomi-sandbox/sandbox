@@ -4,19 +4,15 @@
     <title>Hello React</title>
     <!-- Not present in the tutorial. Just for basic styling. -->
     <link rel="stylesheet" href="css/base.css" />
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/react.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/JSXTransformer.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
+    <script src="bower_components/react/react.js"></script>
+    <script src="bower_components/react/JSXTransformer.js"></script>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
 
     <script src="bower_components/react-bootstrap/react-bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.min.css">
 </head>
 <body>
-<div id="mixin"></div>
-<div id="boot"></div>
-
-<script type="text/jsx;harmony=true" src="scripts/mixin.js"></script>
-<script type="text/jsx;harmony=true" src="scripts/bootstrap.js"></script>
+<div id="listHeader"></div>
+<script type="text/jsx;harmony=true" src="scripts/chatroom/listheader.jsx"></script>
 </body>
 </html>
