@@ -13,6 +13,7 @@ import (
 
 	"github.com/zenazn/goji"
 	"github.com/zenazn/goji/web"
+	"net/url"
 )
 
 type Comment struct {
@@ -101,8 +102,10 @@ func parseComment(data []byte) Comment {
 		case "author":
 			comment.Author = keyVal[1]
 		case "text":
-			comment.Text = keyVal[1]
+			comment.Text, _ = url.QueryUnescape(keyVal[1])
 		}
+
+		fmt.Println("comment: ", string(keyVal[1]))
 	}
 	return comment
 }

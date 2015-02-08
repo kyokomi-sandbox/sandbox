@@ -10,11 +10,15 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+var React = require("React");
+var $ = require("jquery");
+
 var converter = new Showdown.converter();
 
 var Comment = React.createClass({
   render: function() {
     var rawMarkup = converter.makeHtml(this.props.children.toString());
+    //var rawMarkup = this.props.children.toString();
     return (
       <div className="comment">
         <h2 className="commentAuthor">
@@ -122,127 +126,129 @@ var CommentForm = React.createClass({
   }
 });
 
-React.render(
-  <CommentBox url="comments.json" pollInterval={2000} />,
-  document.getElementById('content')
-);
+//React.render(
+//  <CommentBox url="comments.json" pollInterval={2000} />,
+//  document.getElementById('content')
+//);
 
-var Text = React.createClass({
-  getInitialState() {
-    return {
-      textValue: "initial value"
-    };
-  },
-  changeText1(e) {
-    this.setState({textValue: e.target.value});
-  },
-  changeText2(e) {
-    this.setState({textValue: this.refs.inputText.getDOMNode().value});
-  },
-  render() {
-    return (
-      <div>
-        <p>{this.state.textValue}</p>
-        <input type="text" value={this.state.textValue} onChange={this.changeText1} />
-        <input type="text" ref="inputText" defaultValue="initial value" />
-        <button onClick={this.changeText2}>change</button>
-      </div>
-    );
-  }
-});
+//var Text = React.createClass({
+//  getInitialState() {
+//    return {
+//      textValue: "initial value"
+//    };
+//  },
+//  changeText1(e) {
+//    this.setState({textValue: e.target.value});
+//  },
+//  changeText2(e) {
+//    this.setState({textValue: this.refs.inputText.getDOMNode().value});
+//  },
+//  render() {
+//    return (
+//      <div>
+//        <p>{this.state.textValue}</p>
+//        <input type="text" value={this.state.textValue} onChange={this.changeText1} />
+//        <input type="text" ref="inputText" defaultValue="initial value" />
+//        <button onClick={this.changeText2}>change</button>
+//      </div>
+//    );
+//  }
+//});
 
-React.render(
-  <Text />,
-  document.getElementById('textForm')
-);
+//React.render(
+//  <Text />,
+//  document.getElementById('textForm')
+//);
 
-var OreTextArea = React.createClass({
-  getInitialState() {
-    return {
-      textAreaValue: "initial value"
-    };
-  },
-  onChangeText(e) {
-    this.setState({textAreaValue: e.target.value});
-  },
-  onClick() {
-    this.setState({textAreaValue: this.refs.textArea.getDOMNode().value});
-  },
-  render() {
-    return (
-      <div>
-        <div>{this.state.textAreaValue}</div>
-        <div>
-          <textarea value={this.state.textAreaValue} onChange={this.onChangeText} />
-        </div>
-        <div>
-          <textarea ref="textArea">this is default value</textarea>
-          <button onClick={this.onClick}>change</button>
-        </div>
-      </div>
-    );
-  }
-});
+//var OreTextArea = React.createClass({
+//  getInitialState() {
+//    return {
+//      textAreaValue: "initial value"
+//    };
+//  },
+//  onChangeText(e) {
+//    this.setState({textAreaValue: e.target.value});
+//  },
+//  onClick() {
+//    this.setState({textAreaValue: this.refs.textArea.getDOMNode().value});
+//  },
+//  render() {
+//    return (
+//      <div>
+//        <div>{this.state.textAreaValue}</div>
+//        <div>
+//          <textarea value={this.state.textAreaValue} onChange={this.onChangeText} />
+//        </div>
+//        <div>
+//          <textarea ref="textArea">this is default value</textarea>
+//          <button onClick={this.onClick}>change</button>
+//        </div>
+//      </div>
+//    );
+//  }
+//});
 
-React.render(
-  <OreTextArea />,
-  document.getElementById('oreTextArea')
-);
+//React.render(
+//  <OreTextArea />,
+//  document.getElementById('oreTextArea')
+//);
 
-var OreSelectBox = React.createClass({
-  getDefaultProps() {
-    return {
-      answers: [1, 10, 100, 1000]
-    };
-  },
-  getInitialState() {
-    return {
-      selectValue: 1,
-      selectValues: [1,100]
-    };
-  },
-  onChangeSelectValue(e) {
-    this.setState({selectValue: e.target.value});
-  },
-  onChangeSelectValues(e) {
-    var idx = 0;
-  	var values = [];
-  	for (var i = 0; i < e.target.options.length; i++) {
-  	    var opt = e.target.options[i]
-  	    if (!opt.selected) {
-            continue;
-        }
-        values[idx] = opt.value;
-        idx++;
-  	}
+//var OreSelectBox = React.createClass({
+//  getDefaultProps() {
+//    return {
+//      answers: [1, 10, 100, 1000]
+//    };
+//  },
+//  getInitialState() {
+//    return {
+//      selectValue: 1,
+//      selectValues: [1,100]
+//    };
+//  },
+//  onChangeSelectValue(e) {
+//    this.setState({selectValue: e.target.value});
+//  },
+//  onChangeSelectValues(e) {
+//    var idx = 0;
+//  	var values = [];
+//  	for (var i = 0; i < e.target.options.length; i++) {
+//  	    var opt = e.target.options[i]
+//  	    if (!opt.selected) {
+//            continue;
+//        }
+//        values[idx] = opt.value;
+//        idx++;
+//  	}
+//
+//    this.setState({selectValues: values});
+//  },
+//  render() {
+//    var options = this.props.answers.map(function(answer) {
+//      return <option value={answer} key={answer}>{answer}</option>;
+//    });
+//    return (
+//      <div>
+//        <div>selectValue: {this.state.selectValue}</div>
+//        <div>
+//          <select value={this.state.selectValue} onChange={this.onChangeSelectValue}>
+//            {options}
+//          </select>
+//        </div>
+//        <div>selectValues: {this.state.selectValues.join(",")}</div>
+//        <div>
+//          <select multiple={true} defaultValue={this.state.selectValues} onChange={this.onChangeSelectValues}>
+//            {options}
+//          </select>
+//        </div>
+//      </div>
+//    );
+//  }
+//});
 
-    this.setState({selectValues: values});
-  },
-  render() {
-    var options = this.props.answers.map(function(answer) {
-      return <option value={answer} key={answer}>{answer}</option>;
-    });
-    return (
-      <div>
-        <div>selectValue: {this.state.selectValue}</div>
-        <div>
-          <select value={this.state.selectValue} onChange={this.onChangeSelectValue}>
-            {options}
-          </select>
-        </div>
-        <div>selectValues: {this.state.selectValues.join(",")}</div>
-        <div>
-          <select multiple={true} defaultValue={this.state.selectValues} onChange={this.onChangeSelectValues}>
-            {options}
-          </select>
-        </div>
-      </div>
-    );
-  }
-});
+//React.render(
+//  <OreSelectBox />,
+//  document.getElementById('oreSelectBox')
+//);
 
-React.render(
-  <OreSelectBox />,
-  document.getElementById('oreSelectBox')
-);
+module.exports = CommentBox;
 
