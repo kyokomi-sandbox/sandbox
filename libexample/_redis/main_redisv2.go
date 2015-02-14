@@ -9,19 +9,48 @@ import (
 
 func main() {
 
-	var host string
-	flag.StringVar(&host, "host", "localhost", "host name")
-	flag.Parse()
+    example2()
+}
 
-	opt := redis.Options{}
-	opt.Addr = strings.Join([]string{host, "6379"}, ":")
-	opt.Network = "tcp"
+func example1() {
 
-	client := redis.NewClient(&opt)
-	defer client.Close()
+    var host string
+    flag.StringVar(&host, "host", "localhost", "host name")
+    flag.Parse()
 
-	client.Set("foo", "bar")
+    opt := redis.Options{}
+    opt.Addr = strings.Join([]string{host, "6379"}, ":")
+    opt.Network = "tcp"
 
-	strCmd := client.Get("foo")
-	fmt.Println(strCmd.String())
+    client := redis.NewClient(&opt)
+    defer client.Close()
+
+    client.Set("foo", "bar")
+
+    strCmd := client.Get("foo")
+    fmt.Println(strCmd.String())
+}
+
+func example2() {
+
+    var host string
+    flag.StringVar(&host, "host", "localhost", "host name")
+    flag.Parse()
+
+    opt := redis.Options{}
+    opt.Addr = strings.Join([]string{host, "6379"}, ":")
+    opt.Network = "tcp"
+
+    client := redis.NewClient(&opt)
+    defer func() {
+        fmt.Println("defer")
+    }()
+
+    client.Set("foo12", "bar")
+    strCmd := client.Get("foo1")
+    fmt.Println(strCmd.String())
+    
+    panic("error")
+
+    client.Close()
 }

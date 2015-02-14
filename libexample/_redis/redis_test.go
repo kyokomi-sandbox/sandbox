@@ -25,11 +25,11 @@ func TestMain(t *testing.T) {
 	defer client.Close()
 
 	if strCmd := client.Set("foo2", "bar"); strCmd.Err() != nil {
-		t.Errorf(strCmd.Err().Error())
+		t.Errorf(strCmd.Err())
 	}
 
 	if strCmd := client.Get("foo2"); strCmd.Err() != nil {
-		t.Errorf(strCmd.Err().Error())
+		t.Errorf(strCmd.Err())
 	} else {
 		fmt.Println(strCmd.String())
 	}
