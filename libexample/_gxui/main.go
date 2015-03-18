@@ -83,8 +83,11 @@ func appMain(driver gxui.Driver) {
 
 	label := theme.CreateLabel()
 	label.SetText("hogehogehoge")
-	label.Layout(math.CreateRect(100, 100, 100, 100))
-	window.AddChild(label)
+	label.SetMargin(math.CreateSpacing(200))
+	layout := theme.CreateLinearLayout()
+	layout.AddChild(label)
+
+	window.AddChild(layout)
 
 	gxui.EventLoop(driver)
 }
