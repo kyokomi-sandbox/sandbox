@@ -11,6 +11,12 @@ import (
 	"github.com/google/gxui/drivers/gl"
 	"github.com/google/gxui/math"
 	"github.com/google/gxui/themes/dark"
+
+	"image"
+	"image/color"
+	gomath "math"
+	"os"
+	"log"
 )
 
 var data = flag.String("data", "", "path to data")
@@ -67,29 +73,60 @@ func buildMoon(theme gxui.Theme, center math.Point, radius float32) gxui.Image {
 
 func appMain(driver gxui.Driver) {
 	theme := dark.CreateTheme(driver)
-	image := theme.CreateImage()
 	window := theme.CreateWindow(800, 600, "Polygon")
-	window.AddChild(image)
 
-	window.AddChild(buildStar(theme, math.Point{X: 100, Y: 100}, 50, 0.2, 6))
-	window.AddChild(buildStar(theme, math.Point{X: 650, Y: 170}, 70, 0.5, 7))
-	window.AddChild(buildStar(theme, math.Point{X: 40, Y: 300}, 20, 0, 5))
-	window.AddChild(buildStar(theme, math.Point{X: 410, Y: 320}, 25, 0.9, 5))
-	window.AddChild(buildStar(theme, math.Point{X: 220, Y: 520}, 45, 0, 6))
+	container := theme.CreateLinearLayout()
 
-	window.AddChild(buildMoon(theme, math.Point{X: 400, Y: 300}, 200))
+//	texture := driver.CreateTexture(getImage(cacheDir, tweet.User.ProfileImageURL), 96)
+	f, err := os.Open("data/icont19.png")
+	if err != nil {
+		log.Fatalln(err)
+	}
+	defer f.Close()
+	im, _, err := image.Decode(f)
+	if err != nil {
+		log.Fatalln(err)
+	}
 
-	window.OnClose(driver.Terminate)
+	for i := 0; i < 100; i++ {
+		pict := theme.CreateImage()
+		texture := driver.CreateTexture(im, 96)
+		texture.SetFlipY(true)
+		pict.SetTexture(texture)
+		pict.SetExplicitSize(math.Size{32, 32})
+		pict.SetMargin(math.CreateSpacing(4))
+		container.AddChild(pict)
+	}
 
 	label := theme.CreateLabel()
 	label.SetText("hogehogehoge")
 	label.SetMargin(math.CreateSpacing(200))
-	layout := theme.CreateLinearLayout()
-	layout.AddChild(label)
+	container.AddChild(label)
 
-	window.AddChild(layout)
+	window.OnClose(driver.Terminate)
+
+	window.AddChild(container)
 
 	gxui.EventLoop(driver)
+}
+
+func depthToImage(img *image.RGBA, w int, h int, buffer []byte) {
+	for y := 0; y < h; y++ {
+		for x := 0; x < w; x++ {
+			bits := (uint32(buffer[3]) << 24) | (uint32(buffer[2]) << 16) | (uint32(buffer[1]) << 8) | (uint32(buffer[0]) << 0)
+			depth := gomath.Float32frombits(bits)
+			buffer = buffer[4:]
+
+			d := 0.01 / (1.0 - depth)
+			c := color.RGBA{
+				R: byte(math.Cosf(d+math.TwoPi*0.000)*127.0 + 128.0),
+				G: byte(math.Cosf(d+math.TwoPi*0.333)*127.0 + 128.0),
+				B: byte(math.Cosf(d+math.TwoPi*0.666)*127.0 + 128.0),
+				A: byte(0xFF),
+			}
+			img.Set(x, y, c)
+		}
+	}
 }
 
 func main() {
