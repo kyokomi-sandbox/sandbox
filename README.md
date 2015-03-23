@@ -3,6 +3,7 @@ go-sandbox
 
 sandbox golang
 
+- atourofgo: A tour of Go
 - example: 標準ライブラリとか検証とか
 - libexample: 標準ライブラリ外
 - design: JavaのデザインパターンっぽいやつをGoで書いてる
