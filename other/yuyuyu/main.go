@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"os"
+	"io"
 )
 
 type Settings struct {
@@ -94,12 +95,8 @@ func downloadMovie(movieURL string, dirPath, fileName string) error {
 	if err != nil {
 		return err
 	}
+	defer res.Body.Close()
 
-	data, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		return err
-	}
-	
 	if err := os.MkdirAll(dirPath, 0755); err != nil {
 		log.Println(err)
 	}
@@ -108,10 +105,9 @@ func downloadMovie(movieURL string, dirPath, fileName string) error {
 	if err != nil {
 		return err
 	}
+	defer f.Close()
 
-	f.Write(data)
-
-	if err := f.Close(); err != nil {
+	if _, err := io.Copy(f, res.Body); err != nil {
 		return err
 	}
 
