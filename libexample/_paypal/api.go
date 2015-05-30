@@ -6,6 +6,7 @@ import (
 
 	"golang.org/x/oauth2"
 	"golang.org/x/net/context"
+	"github.com/k0kubun/pp"
 )
 
 type funcType string
@@ -27,11 +28,12 @@ func LoginPayPal(ctx context.Context, w http.ResponseWriter, r *http.Request) {
 }
 
 func AuthPayPalCallback(ctx context.Context, w http.ResponseWriter, r *http.Request) {
+	pp.Println(r)
 	code := r.FormValue("code")
 	token, err := GetAuthToken(ctx, code)
 	if err != nil {
 		log.Println("[ERROR] paypal.GetAuthToken", err)
-		http.Redirect(w, r, "/error", 302) // TODO: redirect errorPageURL
+		w.Write([]byte(err.Error()))
 		return
 	}
 

@@ -19,7 +19,6 @@ func WithPayPal(ctx context.Context) context.Context {
 	clientID := os.Getenv("PAYPAL_CLIENTID")
 	if clientID == "" {
 		// TODO: error?
-		clientID = "AZz2Ai4gQliluOXFZCEt7ktV7m4cK9hilomvEzWq8Ojq6mKbT1WVFr9_Xv9XeXwq22sJzwgybttA2gyI"
 	}
 	secret := os.Getenv("PAYPAL_SECRET")
 	if secret == "" {
@@ -39,7 +38,7 @@ func WithPayPal(ctx context.Context) context.Context {
 		ClientSecret: secret,
 		RedirectURL:  callBackURL,
 		Endpoint:     paypal.Endpoint,
-		Scopes:       []string{"profile email address phone"},
+		Scopes:       []string{"openid"},
 	}
 
 	// TODO: 本番と開発で呼び分け
