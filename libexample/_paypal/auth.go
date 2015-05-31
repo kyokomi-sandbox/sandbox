@@ -1,8 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"os"
+	"errors"
+	"log"
 
 	"golang.org/x/net/context"
 	"golang.org/x/oauth2"
@@ -11,40 +12,56 @@ import (
 
 type authKey string
 
+var (
+	ErrNonClientID = errors.New("env error PAYPAL_CLIENTID")
+	ErrNonSecret   = errors.New("env error PAYPAL_SECRET")
+	ErrNonBaseURL  = errors.New("env error BASE_URL")
+)
+
 func NewContext(ctx context.Context) context.Context {
-	return WithPayPal(ctx)
+	ctx, err := WithPayPal(ctx)
+	if err != nil {
+		log.Println(err)
+	}
+	return ctx
 }
 
-func WithPayPal(ctx context.Context) context.Context {
+func WithPayPal(ctx context.Context) (context.Context, error) {
 	clientID := os.Getenv("PAYPAL_CLIENTID")
 	if clientID == "" {
-		// TODO: error?
+		return ctx, ErrNonClientID
 	}
 	secret := os.Getenv("PAYPAL_SECRET")
 	if secret == "" {
-		// TODO: error?
+		return ctx, ErrNonSecret
 	}
 	baseURL := os.Getenv("BASE_URL")
 	if baseURL == "" {
-		baseURL = "http://localhost:8000/"
+		return ctx, ErrNonBaseURL
 	}
 
+	// TODO: callbackを外から指定
 	callBackURL := baseURL + "auth/paypal/callback"
 
-	fmt.Println(callBackURL)
-
+	// TODO: scopeは外から指定できるようにする
 	conf := &oauth2.Config{
 		ClientID:     clientID,
 		ClientSecret: secret,
 		RedirectURL:  callBackURL,
 		Endpoint:     paypal.Endpoint,
-		Scopes:       []string{"openid"},
+		Scopes: []string{
+			"profile",
+			"email",
+			"address",
+			"phone",
+			"https://uri.paypal.com/services/paypalattributes",
+		},
 	}
 
-	// TODO: 本番と開発で呼び分け
+	// TODO: 本番と開発で呼び分ける
 	conf.Endpoint = paypal.SandboxEndpoint
 
-	return context.WithValue(ctx, authKey("paypal"), conf)
+	return context.WithValue(ctx, authKey("paypal"), conf), nil
 }
 
 func GetAuthToken(ctx context.Context, code string) (*oauth2.Token, error) {

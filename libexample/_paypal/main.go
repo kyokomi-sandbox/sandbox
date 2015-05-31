@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"runtime"
 
-	"golang.org/x/oauth2"
 	"github.com/guregu/kami"
 	"golang.org/x/net/context"
+	"golang.org/x/oauth2"
 )
 
 func main() {
@@ -18,8 +18,13 @@ func main() {
 
 	ctx := context.Background()
 	ctx = NewContext(ctx)
+
 	ctx = WithAuthCallbackFunc(ctx, func(ctx context.Context, w http.ResponseWriter, r *http.Request, token *oauth2.Token) {
 		fmt.Println(token)
+	})
+	ctx = WithAuthErrorFunc(ctx, func(ctx context.Context, w http.ResponseWriter, r *http.Request, err error) {
+		fmt.Println(err)
+		w.Write([]byte(err.Error()))
 	})
 
 	kami.Context = ctx
