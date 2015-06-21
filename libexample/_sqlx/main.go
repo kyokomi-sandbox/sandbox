@@ -36,11 +36,11 @@ func sqlxNamed(query string, args interface{}) (string, []interface{}, error) {
 	return sqlx.Named(query, args)
 }
 
-func sqlxNamedReplaceQueryComment(query string, args interface{}) (string, []interface{}, error) {
-	return sqlx.Named(replaceQueryComment(query), args)
+func sqlxNamedRegexpReplaceQueryComment(query string, args interface{}) (string, []interface{}, error) {
+	return sqlx.Named(regexpReplaceQueryComment(query), args)
 }
 
-func replaceQueryComment(query string) string {
+func regexpReplaceQueryComment(query string) string {
 	// */〜スペースまたは改行までの文字を削る
 	reg1 := regexp.MustCompile(`\*/[^ |\n]*[ ]`)
 	reg2 := regexp.MustCompile(`\*/[^ |\n]*[\n]`)
@@ -57,7 +57,7 @@ func replaceQueryComment(query string) string {
 }
 
 func main() {
-	query, args, err := sqlxNamedReplaceQueryComment(queryString, argsMap)
+	query, args, err := sqlxNamedRegexpReplaceQueryComment(queryString, argsMap)
 	if err != nil {
 		panic(err)
 	}
