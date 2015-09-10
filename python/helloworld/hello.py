@@ -61,3 +61,20 @@ f = open("sample.txt", "w")
 f.write("Hello\n")
 f.write("world\n")
 f.close()
+
+# LとMが対応するオブジェクトは別モノなのでisはFALSE
+
+L = [2, 3, 4]
+M = [2, 3, 4]
+
+print(L, "==", M, L == M)
+print(L, "is", M, L is M)
+
+# XとYはキャッシュが行われるためTRUEになる
+
+X = 2
+Y = 2
+
+print(X, "==", Y, X == Y)
+print(X, "is", Y, X is Y)
+
