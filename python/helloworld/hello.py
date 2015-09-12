@@ -78,3 +78,10 @@ Y = 2
 print(X, "==", Y, X == Y)
 print(X, "is", Y, X is Y)
 
+print(int("42"), repr(12), str(23))
+
+S = "hogehogefugahoge"
+print(S.replace("hoge", "piyo"))
+print("hogehoge %s == %d" % ("fuga", 11111))
+print("%(X)d %(Y)d" % {"X": 100, "Y": 200})
+print(list(S))
