@@ -7,7 +7,10 @@ import (
 	"net/http"
 	"os"
 
+	"image"
+
 	"github.com/nfnt/resize"
+	"github.com/oliamb/cutter"
 )
 
 func main() {
@@ -33,9 +36,9 @@ func main() {
 	resp.Body.Close()
 
 	{
-		m := resize.Resize(100, 0, img, resize.Lanczos3)
+		m := resize.Resize(300, 300, img, resize.Bicubic)
 
-		out, err := os.Create("resize_100_test_resized.jpg")
+		out, err := os.Create("resize.jpg")
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -46,8 +49,9 @@ func main() {
 	}
 
 	{
-		m := resize.Thumbnail(800, 800, img, resize.Lanczos3)
-		out, err := os.Create("thumb_400_test_resized.jpg")
+		m := resize.Resize(300, 0, img, resize.Bicubic)
+
+		out, err := os.Create("resize_width.jpg")
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -57,4 +61,45 @@ func main() {
 		jpeg.Encode(out, m, nil)
 	}
 
+	{
+		m := resize.Resize(0, 300, img, resize.Bicubic)
+
+		out, err := os.Create("resize_height.jpg")
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer out.Close()
+
+		// write new image to file
+		jpeg.Encode(out, m, nil)
+	}
+
+	{
+		m := resize.Thumbnail(300, 300, img, resize.Bicubic)
+		out, err := os.Create("thumbnail.jpg")
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer out.Close()
+
+		// write new image to file
+		jpeg.Encode(out, m, nil)
+	}
+
+	{
+		m, err := cutter.Crop(img, cutter.Config{
+			Width:  300,
+			Height: 300,
+			Anchor: image.Point{0, 0},
+			Mode:   cutter.Centered, // optional, default value
+		})
+		out, err := os.Create("crop_centered.jpg")
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer out.Close()
+
+		// write new image to file
+		jpeg.Encode(out, m, nil)
+	}
 }
