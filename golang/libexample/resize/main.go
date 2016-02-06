@@ -19,7 +19,7 @@ func main() {
 	flag.Parse()
 
 	if imageURL == "" {
-		imageURL = "http://dengeki-hime.com/dengeki-hime/wp-content/uploads/2016/01/DH201601_khmg_06_01s.jpg"
+		imageURL = "http://pics.dmm.co.jp/digital/pcgame/guide/selen_0024/head.jpg"
 	}
 
 	resp, err := http.Get(imageURL)
@@ -94,6 +94,29 @@ func main() {
 			Mode:   cutter.Centered, // optional, default value
 		})
 		out, err := os.Create("crop_centered.jpg")
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer out.Close()
+
+		// write new image to file
+		jpeg.Encode(out, m, nil)
+	}
+
+	{
+		x, y := uint(640), uint(640)
+		if img.Bounds().Size().X < img.Bounds().Size().Y {
+			y = 0
+		} else {
+			x = 0
+		}
+		m, err := cutter.Crop(resize.Resize(x, y, img, resize.Bicubic), cutter.Config{
+			Width:  640,
+			Height: 640,
+			Anchor: image.Point{0, 0},
+			Mode:   cutter.Centered, // optional, default value
+		})
+		out, err := os.Create("resize_crop_centered.jpg")
 		if err != nil {
 			log.Fatal(err)
 		}
