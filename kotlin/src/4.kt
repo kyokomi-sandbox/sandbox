@@ -40,6 +40,12 @@ fun main(args: Array<String>) {
   mapSample()
 
   rangeSample()
+
+  ifSample()
+
+  whenSample()
+
+  loopSample()
 }
 
 fun arraySample() {
@@ -103,3 +109,51 @@ fun rangeSample() {
   println((5 downTo 1).toList())
   println((1..5 step 2).toList())
 }
+
+fun ifSample() {
+  // 普通にifで使えるし、ブロック内で最後に評価される式が返ってくる
+  var score = 78
+  val message = if (score >= 60) "合格!" else "不合格"
+  println(message)
+}
+
+fun whenSample() {
+  // switchを強力にした感じ
+  val x = 1
+  val message = when (x) {
+    1 -> "one"
+    2, 3 -> "two or three"
+    else -> {
+      "unknown" // 値を返すwhen式ではelseが必須
+    }
+  }
+  println(message)
+
+  val y = ""
+  val blank = when (y) {
+    is String -> y.isBlank()
+    else -> true
+  }
+}
+
+fun loopSample() {
+  var count = 3
+  while (count-- > 0) {
+    println("Hello")
+  }
+
+  for (x in arrayOf(1, 2, 3)) {
+    println(x)
+  }
+
+  val names = listOf("foo", "bar", "baz")
+  for (name in names) {
+    println(name)
+  }
+
+  for (i in 1..10) {
+    println(i)
+  }
+}
+
+
