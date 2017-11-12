@@ -43,14 +43,21 @@ open class JapaneseGreeter : Greeter {
   }
 }
 
-class JapaneseGreeterWithRecording : JapaneseGreeter() {
+class JapaneseGreeterWithRecording : Greeter {
+  // 移譲Ver
+  private val greeter: Greeter = JapaneseGreeter()
+
   private val _targets: MutableSet<String> = mutableSetOf()
 
   val targets: Set<String> get() = _targets
 
+  override fun sayHello() {
+    greeter.sayHello()
+  }
+
   override fun sayHello(target: String) {
     _targets += target
-    super.sayHello(target)
+    greeter.sayHello(target)
   }
 }
 
