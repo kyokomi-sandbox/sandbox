@@ -28,8 +28,6 @@ func main() {
 			os.Exit(1)
 		}
 
-		log.Println("hoge")
-
 		go func() {
 			log.Printf("Reciving data: %s from %s", string(buf[:n]), addr.String())
 
