@@ -1,6 +1,0 @@
-database:
-  main:
-    user: admin
-    password: password
-    host: localhost
-    db: test

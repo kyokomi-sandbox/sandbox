@@ -1,2 +1,0 @@
-<%! func MySubTmpl(w io.Writer, title string) error %>
-> 子要素への変数渡し <%= title %>
