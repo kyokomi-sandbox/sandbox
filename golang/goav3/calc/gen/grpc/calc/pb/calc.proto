@@ -1,0 +1,29 @@
+// Code generated with goa v3.0.6, DO NOT EDIT.
+//
+// calc protocol buffer definition
+//
+// Command:
+// $ goa gen calc/design
+
+syntax = "proto3";
+
+package calc;
+
+option go_package = "calcpb";
+
+// The calc service performs operations on numbers.
+service Calc {
+	// Add implements add.
+	rpc Add (AddRequest) returns (AddResponse);
+}
+
+message AddRequest {
+	// Left operand
+	sint32 a = 1;
+	// Right operand
+	sint32 b = 2;
+}
+
+message AddResponse {
+	sint32 field = 1;
+}
