@@ -18,13 +18,13 @@ func main() {
 	var wg sync.WaitGroup
 	noop := func() { wg.Done(); <-c }
 
-	const numGroutines = 1e5
-	wg.Add(numGroutines)
+	const numGoroutine = 1e5
+	wg.Add(numGoroutine)
 	before := memConsumed()
-	for i := numGroutines; i > 0; i-- {
+	for i := numGoroutine; i > 0; i-- {
 		go noop()
 	}
 	wg.Wait()
 	after := memConsumed()
-	fmt.Printf("%.3fkb", float64(after-before)/numGroutines/1000)
+	fmt.Printf("%.3fkb", float64(after-before)/numGoroutine/1000)
 }
