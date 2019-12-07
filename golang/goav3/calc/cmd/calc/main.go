@@ -54,6 +54,7 @@ func main() {
 		calcEndpoints = calc.NewEndpoints(calcSvc)
 
 		// Apply ErrorLogger to all endpoints.
+		calcEndpoints.Use(middleware.PanicRecover(logger))
 		calcEndpoints.Use(middleware.ErrorLogger(logger, "calc"))
 
 		// Or apply ErrorLogger to specific endpoint.
