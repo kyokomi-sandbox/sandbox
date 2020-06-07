@@ -42,5 +42,15 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val navController = findNavController()
         // TODO observe the authenticationState and redirect the user to LoginFragment if they are
         //  not authenticated.
+        viewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
+            when (authenticationState) {
+                LoginViewModel.AuthenticationState.AUTHENTICATED -> Log.i(TAG, "Authenticated")
+                LoginViewModel.AuthenticationState.UNAUTHENTICATED -> navController.navigate(R.id.loginFragment)
+                else -> Log.e(
+                    TAG,
+                    "New $authenticationState state that doesn't require any UI change"
+                )
+            }
+        })
     }
 }

@@ -17,11 +17,11 @@
 package com.example.android.firebaseui_login_sample
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -36,7 +36,7 @@ class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
 
         // Inflate the layout for this fragment
@@ -53,6 +53,10 @@ class MainFragment : Fragment() {
         //  user to customizeFragment. Don’t worry if you see unresolved errors as you
         //  implementation action! If you see unresolved errors, you can recompile the app from the
         //  Build menu to generate and use the new navigation actions you just created in the xml.
+        binding.settingsBtn.setOnClickListener {
+            val action = MainFragmentDirections.actionMainFragmentToSettingsFragment()
+            findNavController().navigate(action)
+        }
     }
 
     /**
@@ -87,11 +91,11 @@ class MainFragment : Fragment() {
 
     private fun getFactWithPersonalization(fact: String): String {
         return String.format(
-            resources.getString(
-                R.string.welcome_message_authed,
-                FirebaseAuth.getInstance().currentUser?.displayName,
-                Character.toLowerCase(fact[0]) + fact.substring(1)
-            )
+                resources.getString(
+                        R.string.welcome_message_authed,
+                        FirebaseAuth.getInstance().currentUser?.displayName,
+                        Character.toLowerCase(fact[0]) + fact.substring(1)
+                )
         )
     }
 }
