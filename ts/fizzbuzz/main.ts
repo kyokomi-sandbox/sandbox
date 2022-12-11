@@ -1,12 +1,13 @@
 for (let i = 1; i <= 50; i++) {
-	let out = '';
-	if (i % 3 == 0) {
-			out += 'Fizz';
-	}
+  let out = '';
+	
+  if (i % 3 == 0) {
+    out += 'Fizz';
+  }
 
-	if (i % 5 == 0) {
-		out += 'Buzz';
-	}
+  if (i % 5 == 0) {
+    out += 'Buzz';
+  }
 
-	console.log(out || i);
+  console.log(out || i);
 }
