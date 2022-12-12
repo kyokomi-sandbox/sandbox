@@ -16,10 +16,10 @@ message GreetResponse {
 
 service GreetService {
   rpc Greet(GreetRequest) returns (GreetResponse) {
-		option (google.api.http) = {
-			post: "/greet.v1.GreetService/Greet"
-			body: "*"
-		};
-	}
+    option (google.api.http) = {
+      post: "/greet.v1.GreetService/Greet"
+      body: "*"
+    };
+  }
 }
 
