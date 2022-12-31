@@ -16,6 +16,8 @@ message GreetResponse {
 
 service GreetService {
   rpc Greet(GreetRequest) returns (GreetResponse) {
+    // NOTE: これを書くことで、swaggerに含めることができる
+    // TODO: post: /<Package>.<Service>/<Method> を自動で追記したい
     option (google.api.http) = {
       post: "/greet.v1.GreetService/Greet"
       body: "*"
