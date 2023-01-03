@@ -5,7 +5,7 @@ services:
       - ./etc/nginx/conf.d:/etc/nginx/conf.d
       - ./public:/public
     ports:
-      - "8080:80"
+      - "80:80"
     links:
       - app
 
