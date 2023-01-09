@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package isuconp.v1;
+
+option go_package = "isuconp/gen/isuconp/v1;isuconpv1";
+
+message InitializeRequest {
+}
+
+message InitializeResponse {
+}
+
+message GetLoginRequest {
+}
+
+message GetLoginResponse {
+  string id = 1;
+  string name = 2;
+  string passhash = 3;
+  int32 authority = 4;
+  bool  delFlg = 5;
+  int64 createdAtUnixNano = 6;
+}
+
+service IsuconpService {
+  rpc Initialize(InitializeRequest) returns (InitializeResponse) {}
+  rpc GetLogin(GetLoginRequest) returns (GetLoginResponse) {}
+}
