@@ -1,3 +1,5 @@
-myarr=(one two three four five)
-echo ${myarr[*]}
-echo ${myarr[0]}
+#!/bin/bash
+read -p "May I ask your name: " name
+echo "Hello $name, nice to meet you!"
+exit 0
+
